@@ -20,9 +20,14 @@ def get_running_processes():
 def get_logs():
     logs = subprocess.check_output("tail -n 50 /var/log/auth.log", shell=True).decode()
     return logs
+	
+def get_osx():
+    osx = subprocess.check_output("lsb_release -s -d", shell=True).decode()
+    return osx
 
 def report_server_status():
     hostname = subprocess.check_output(['hostname']).decode()
+    osx = get_osx()
     cpu_percent = psutil.cpu_percent()
     virtual_memory = psutil.virtual_memory()
     disk_usage = psutil.disk_usage('/')
@@ -49,6 +54,10 @@ def report_server_status():
 		</tr>
 		<tr>
 			<td style="border-color:currentcolor black black; border-style:none solid solid; border-width:medium 1px 1px; height:19px; vertical-align:bottom; white-space:nowrap; width:135px">Hostname:</td>
+			<td style="border-color:currentcolor black black currentcolor; border-style:none solid solid none; border-width:medium 1px 1px medium; vertical-align:bottom; white-space:nowrap; width:507px"><span style="font-size:15px"><span style="color:black"><span style="font-family:Calibri,sans-serif">&nbsp;</span></span></span>{}</td>
+		</tr>
+		<tr>
+			<td style="border-color:currentcolor black black; border-style:none solid solid; border-width:medium 1px 1px; height:19px; vertical-align:bottom; white-space:nowrap; width:135px">OS:</td>
 			<td style="border-color:currentcolor black black currentcolor; border-style:none solid solid none; border-width:medium 1px 1px medium; vertical-align:bottom; white-space:nowrap; width:507px"><span style="font-size:15px"><span style="color:black"><span style="font-family:Calibri,sans-serif">&nbsp;</span></span></span>{}</td>
 		</tr>
 		<tr>
@@ -99,7 +108,7 @@ def report_server_status():
 </table>
         </body>
     </html>
-    """.format(hostname,cpu_percent, 
+    """.format(hostname,osx,cpu_percent, 
                humanfriendly.format_size(virtual_memory.used, binary=True),
                humanfriendly.format_size(disk_usage.used, binary=True),
                human_readable_net_io_counters,human_readable_boot_time,
