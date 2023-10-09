@@ -57,3 +57,6 @@ The script will generate an HTML email report and send it to the specified email
 **cron job**: Server Performance Update : Every day @8am
 
 ```0 8 * * * /usr/bin/python3 /root/status/server-status.py```
+
+
+<p align="center"><a href=#top>Back to Top</a></p>
