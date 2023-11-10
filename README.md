@@ -31,6 +31,13 @@ To use this script, you need to have the following Python modules installed:
 
 The script also uses subprocess to execute some shell commands and get their output.
 
+>  Sample
+![](https://raw.githubusercontent.com/r0xd4n3t/server-status-report/main/img/a.png)
+
+![](https://raw.githubusercontent.com/r0xd4n3t/server-status-report/main/img/b.png)
+
+![](https://raw.githubusercontent.com/r0xd4n3t/server-status-report/main/img/c.png)
+
 ## 📝 Modify the following variables:
 
 To use the script, you need to modify the following variables in the code:
