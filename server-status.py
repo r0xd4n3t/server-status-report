@@ -20,7 +20,7 @@ def get_running_processes():
 def get_logs():
     logs = subprocess.check_output("tail -n 50 /var/log/auth.log", shell=True).decode()
     return logs
-	
+
 def get_osx():
     osx = subprocess.check_output("lsb_release -s -d", shell=True).decode()
     return osx
@@ -31,6 +31,7 @@ def report_server_status():
     cpu_percent = psutil.cpu_percent()
     virtual_memory = psutil.virtual_memory()
     disk_usage = psutil.disk_usage('/')
+    disk_usage_text = f"Total: {humanfriendly.format_size(disk_usage.total)}, Used: {humanfriendly.format_size(disk_usage.used)} ({disk_usage.percent}%)"
     net_io_counters = psutil.net_io_counters()
     human_readable_net_io_counters =  "Bytes sent: " + humanfriendly.format_size(net_io_counters.bytes_sent) + " Bytes received: " + humanfriendly.format_size(net_io_counters.bytes_recv)
     boot_time = psutil.boot_time()
@@ -61,6 +62,7 @@ def report_server_status():
 			<td style="border-color:currentcolor black black currentcolor; border-style:none solid solid none; border-width:medium 1px 1px medium; vertical-align:bottom; white-space:nowrap; width:507px"><span style="font-size:15px"><span style="color:black"><span style="font-family:Calibri,sans-serif">&nbsp;</span></span></span>{}</td>
 		</tr>
 		<tr>
+		<tr>
 			<td style="border-color:currentcolor black black; border-style:none solid solid; border-width:medium 1px 1px; height:19px; vertical-align:bottom; white-space:nowrap; width:135px">CPU Usage:</td>
 			<td style="border-color:currentcolor black black currentcolor; border-style:none solid solid none; border-width:medium 1px 1px medium; vertical-align:bottom; white-space:nowrap; width:507px"><span style="font-size:15px"><span style="color:black"><span style="font-family:Calibri,sans-serif">&nbsp;</span></span></span>{}%</td>
 		</tr>
@@ -70,7 +72,7 @@ def report_server_status():
 		</tr>
 		<tr>
 			<td style="border-color:currentcolor black black; border-style:none solid solid; border-width:medium 1px 1px; height:19px; vertical-align:bottom; white-space:nowrap; width:135px">Disk Usage:</td>
-			<td style="border-color:currentcolor black black currentcolor; border-style:none solid solid none; border-width:medium 1px 1px medium; vertical-align:bottom; white-space:nowrap; width:507px"><span style="font-size:15px"><span style="color:black"><span style="font-family:Calibri,sans-serif">&nbsp;</span></span></span>{}</td>
+			<td style="border-color:currentcolor black black currentcolor; border-style:none solid solid none; border-width:medium 1px 1px medium; vertical-align:bottom; white-space:nowrap; width:507px"><span style="font-size:15px"><span style="color:black"><span style="font-family:Calibri,sans-serif">&nbsp;</span></span></span>{} {}%</td>
 		</tr>
 		<tr>
 			<td style="border-color:currentcolor black black; border-style:none solid solid; border-width:medium 1px 1px; height:19px; vertical-align:bottom; white-space:nowrap; width:135px">Network IO counters:</td>
@@ -110,7 +112,7 @@ def report_server_status():
     </html>
     """.format(hostname,osx,cpu_percent, 
                humanfriendly.format_size(virtual_memory.used, binary=True),
-               humanfriendly.format_size(disk_usage.used, binary=True),
+               humanfriendly.format_size(disk_usage.used, binary=True), disk_usage.percent,
                human_readable_net_io_counters,human_readable_boot_time,
                uptime,who,last_login,open_port,running_processes,logs)
 
